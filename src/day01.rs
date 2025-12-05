@@ -23,6 +23,18 @@ impl Direction {
     }
 }
 
+impl TryFrom<char> for Direction {
+    type Error = ();
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        match value {
+            'R' => Ok(Direction::Right),
+            'L' => Ok(Direction::Left),
+            _ => Err(()),
+        }
+    }
+}
+
 #[derive(Debug)]
 struct Rotation {
     dir: Direction,
@@ -30,26 +42,19 @@ struct Rotation {
 }
 
 fn parse_input(input_data: String) -> Option<Vec<Rotation>> {
-    let mut input = Vec::new();
-    for line in input_data.lines() {
-        if line.len() < 2 {
-            return None;
-        }
-        let dir = match line.chars().next().unwrap() {
-            'R' => Direction::Right,
-            'L' => Direction::Left,
-            _ => return None,
-        };
-
-        let distance: u64 = match line[1..].parse() {
-            Ok(val) => val,
-            Err(_) => return None,
-        };
-
-        input.push(Rotation { dir, distance });
-    }
-
-    return Some(input);
+    input_data
+        .lines()
+        .map(|line| {
+            if line.len() >= 2
+                && let Ok(dir) = line.chars().next().unwrap().try_into()
+                && let Ok(distance) = line[1..].parse()
+            {
+                Some(Rotation { dir, distance })
+            } else {
+                None
+            }
+        })
+        .collect()
 }
 
 fn count_zero_wheel(input: &[Rotation]) -> u64 {
@@ -111,7 +116,7 @@ pub fn solve_day01(input_data: String) {
     let input = match parse_input(input_data) {
         Some(input) => input,
         None => {
-            println!("Could not parse input!");
+            eprintln!("Could not parse input!");
             return;
         }
     };

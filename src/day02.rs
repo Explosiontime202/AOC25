@@ -141,16 +141,11 @@ fn find_invalid_ids_task2_slow(input: &[IDRange]) -> impl Iterator<Item = u64> {
 }
 
 fn parse_input(input_data: String) -> Option<Vec<IDRange>> {
-    let ranges_opt_it = input_data.trim().split(",").map(IDRange::from_str);
-
-    let mut ranges = Vec::new();
-    for range_opt in ranges_opt_it {
-        let Some(range) = range_opt else {
-            return None;
-        };
-        ranges.push(range);
-    }
-    Some(ranges)
+    input_data
+        .trim()
+        .split(",")
+        .map(IDRange::from_str)
+        .collect()
 }
 
 pub fn solve_day02(input_data: String) {
