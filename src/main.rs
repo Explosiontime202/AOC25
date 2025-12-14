@@ -8,6 +8,7 @@ use day07::solve_day07;
 use day08::solve_day08;
 use day09::solve_day09;
 use day10::solve_day10;
+use day11::solve_day11;
 
 mod day01;
 mod day02;
@@ -19,6 +20,7 @@ mod day07;
 mod day08;
 mod day09;
 mod day10;
+mod day11;
 
 fn main() {
     let mut args = std::env::args();
@@ -66,6 +68,7 @@ fn main() {
         8 => solve_day08(input_data),
         9 => solve_day09(input_data),
         10 => solve_day10(input_data),
+        11 => solve_day11(input_data),
         _ => todo!("Unsolved day"),
     }
 }
